@@ -1,5 +1,5 @@
 <!doctype html>
-
+<html lang="en">
 <head>
   <meta name="viewport" content="with=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
@@ -57,78 +57,6 @@
 <div class="center2">
   <img src="assets/human.png" alt="">
 </div>
-
-
-
-
-<!--<script>
-  // When the user clicks on div, open the popup
-  const dropdowns = document.querySelectorAll('.dropdown');
-
-  dropdowns.forEach(dropdown => {
-
-    const select = dropdown.querySelector('.select');
-    const caret = dropdown.querySelector('.caret');
-    const menu = dropdown.querySelector('.menu');
-    const options = dropdown.querySelectorAll('.menu li');
-    const selected = dropdown.querySelector('.selected');
-
-
-    select.addEventListener('click', () => {
-      select.classList.toggle('select-clicked');
-      caret.classList.toggle('caret-rotate');
-      menu.classList.toggle('menu-open');
-    });
-
-    options.forEach(option => {
-      option.addEventListener('click', () => {
-        selected.innerText = option.innerText;
-        select.classList.remove('select-clicked');
-        caret.classList.remove('caret-rotate');
-        menu.classList.remove('menu-open');
-        options.forEach(option => {
-          option.classList.remove('active');
-        });
-        option.classList.add('active');
-      });
-    });
-  });
-
-  let availableKeywords = [
-    'English', 'Danish', 'German', 'French', 'Spanish', 'Italian', 'Polish', 'Swedish'
-  ];
-
-  const resultBox = document.querySelector(".result-box");
-  const inputBox = document.getElementById("input-box");
-
-  inputBox.onkeyup = function(){
-    let result = [];
-    let input = inputBox.value;
-    if (input.length){
-      result = availableKeywords.filter((keyword) =>{
-        return keyword.toLowerCase().includes(input.toLowerCase());
-      });
-      console.log(result)
-    }
-    display(result);
-
-    if (!result.length){
-      resultBox.innerHTML = '';
-    }
-  }
-
-  function display(result){
-    const content = result.map((list)=>{
-      return "<li onclick=selectInput(this)>" + list + "</li>";
-    });
-
-    resultBox.innerHTML = "<ul>" + content.join('') + "</ul>";
-  }
-
-  function selectInput(list){
-    inputBox.value = list.innerHTML;
-    resultBox.innerHTML = '';
-  }
-</script>-->
 </body>
+</html>
 
