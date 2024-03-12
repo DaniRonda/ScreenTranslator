@@ -4,7 +4,7 @@ import { faEarthAmerica } from '@fortawesome/free-solid-svg-icons';
   templateUrl: 'select-language-page.component.html',
   styleUrls: ['select-language-page.component.css']
 })
-export class SelectLanguagePageComponent{
+export class SelectLanguagePageComponent implements OnInit{
   earthIcon = faEarthAmerica;
   constructor() { }
 

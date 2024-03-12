@@ -4,15 +4,14 @@ import {SelectLanguagePageComponent} from "./select-language-page/select-languag
 import {SnapShotPageComponent} from "./snap-shot-page/snap-shot-page.component";
 
 const routes: Routes = [
-    {
-      path: 'Language',  component : SelectLanguagePageComponent,
-    },
-  {path: 'snapshot', component:  SnapShotPageComponent}
+  {path: '', component: SelectLanguagePageComponent,},
+  {path: 'snap-shot-page.component.html', component: SnapShotPageComponent}
 ];
 
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})],
-    exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})],
+  exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

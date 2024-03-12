@@ -1,17 +1,34 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {faCamera, faEarthAmerica, faFileExport, faCheck, faCrop} from '@fortawesome/free-solid-svg-icons';
+import {TranslationService} from "../../services/translation.service";
+
+
 @Component({
   selector: 'app-snap-shot-page',
   templateUrl: 'snap-shot-page.component.html',
   styleUrls: ['snap-shot-page.component.css']
 })
-export class SnapShotPageComponent {
+export class SnapShotPageComponent implements OnInit{
   cameraIcon = faCamera;
   exportIcon = faFileExport;
   checkIcon = faCheck;
   cropIcon = faCrop;
   protected readonly earthIcon = faEarthAmerica;
-  constructor() { }
+  errorMessage: string = '';
+  availableKeywords: string[] = [];
+
+  constructor(private translationService: TranslationService) {}
+  ngOnInit(): void {
+    this.translationService.getSupportedLanguages()
+      .subscribe(
+        (languages: string[]) => {
+          this.availableKeywords = languages;
+        },
+        (error) => {
+          console.error('Error fetching supported languages:', error);
+        }
+      );
+  }
 
   async capture() {
     try {
@@ -39,4 +56,25 @@ export class SnapShotPageComponent {
       console.error("Error capturing screen:", error);
     }
   }
+
+
+
+  translateText(sourceLanguage: string, targetLanguage: string, sourceText: string): void {
+    this.errorMessage = '';
+    this.translationService.translateText(sourceLanguage, targetLanguage, sourceText)
+      .subscribe(
+        (response: any) => {
+          console.log('Translated text:', response[0].translations[0].text);
+
+         // TODO update UI with translated text
+        },
+        (error) => {
+          console.error('Translation error:', error);
+          this.errorMessage = 'Translation error occurred. Please try again.';
+        }
+      );
+  }
+
+
+
 }

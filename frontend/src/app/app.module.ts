@@ -5,6 +5,9 @@ import {BrowserModule} from "@angular/platform-browser";
 import { SnapShotPageComponent } from './snap-shot-page/snap-shot-page.component';
 import { SelectLanguagePageComponent } from './select-language-page/select-language-page.component';
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {HttpClientModule} from "@angular/common/http";
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -15,6 +18,9 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
     AppRoutingModule,
     BrowserModule,
     FaIconComponent,
+    HttpClientModule
+
+
   ],
   providers: [],
 
