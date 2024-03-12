@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>WackDonald's Login</title>
-  <link rel="stylesheet" href="snipperStyle.css">
   <link rel="icon" href="images/favicon.ico">
   <script src="https://kit.fontawesome.com/6cff64fb2c.js" crossorigin="anonymous"></script>
 </head>
@@ -15,13 +14,24 @@
     <h1>Translate</h1>
     <h2 id="subtext">grab a snippet of the text you'd like translated using the button below. simply make sure all the text is visable and nothing else</h2>
   </div>
-  <div class="bottom">
-    <h2 id="takesnipText">Take Snippet</h2>
-    <button><i class="fa-solid fa-camera"></i></button>
+  <div class="middle">
+
   </div>
-  <p class="or">or</p>
+  <div class="bottom">
+    <div class="imageholder">
+      <img id="image" src="images/Capture.PNG" alt="">
+    </div>
+    <div class="toolset">
+      <button id="cropbtn"><fa-icon [icon]="checkIcon"></fa-icon></button>
+      <button id="sendbtn"><fa-icon [icon]="cropIcon"></fa-icon></button>
+    </div>
+  </div>
+
   <div class="truebottom">
-    <p class="orText">Upload file <i class="fa-solid fa-file-export"></i></p>
+
+    <button (click)="capture()"><fa-icon [icon]="cameraIcon"></fa-icon></button>
+    <p class="orbottom">Or....</p>
+    <p class="orText">Upload file <fa-icon [icon]="exportIcon"></fa-icon></p>
   </div>
 </div>
 <script>
@@ -29,4 +39,3 @@
 
 </script>
 </body>
-</html>

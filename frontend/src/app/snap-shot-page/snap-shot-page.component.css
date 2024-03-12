@@ -14,28 +14,30 @@ body{
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 800px;
-  height: 600px;
+  width: 90%;
+  height: 80%;
   background: #efefef;
   border-radius: 15px;
   border: 1px lightgrey solid;
 }
 .top{
-  padding: 30px;
+  padding: 1%;
   background: #50c878;
-  height: 15%;
+  height: 20%;
+  max-height: 100px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
 .bottom{
   margin: 20px;
   bottom: 0%;
-  height: 50%;
+  height: 67%;
   width: auto;
+
 }
 .center h1{
   text-align: center;
-  padding: 0 0 20px 0;
+  padding: 0 0 1% 0;
   color: #fff;
 
 }
@@ -50,8 +52,21 @@ body{
 }
 .orText{
   text-align: center;
-  padding-top: 1%;
+
   font-size: 26px;
+  position: absolute;
+  top: 49%;
+  left: 91%;
+  transform: translate(-50%, -50%);
+}
+.orbottom{
+  text-align: center;
+  color: #dadada;
+  font-size: 26px;
+  position: absolute;
+  top: 49%;
+  left: 83%;
+  transform: translate(-50%, -50%);
 }
 .orText:hover{
   cursor: pointer;
@@ -63,32 +78,91 @@ body{
   padding-top: 4%;
   font-size: 26px;
 }
+.imageholder{
+  width: 70%;
+  height: 85%;
+  background: lightgrey;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 25px;
+}
+.toolset{
+  display: flex;
+  background: #50c878;
+  width: 70%;
+  height: 10%;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 1%;
+  border-radius: 25px;
+}
+#cropbtn{
+  width: 45px;
+  height: 90%;
+  margin-left: 10px;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 50px;
+  background: #f1f1f1;
+  border: 2px #2e8b57 solid;
+  font-size: 23px;
+  transition: 0.4s;
+}
+#cropbtn:hover{
+  cursor: pointer;
+  background: #2e8b57;
+  color: #fff;
+}
+#sendbtn{
 
+  width: 45px;
+  height: 90%;
+  margin-left: 10px;
+  margin-top: auto;
+  margin-bottom: auto;
+
+  border-radius: 50px;
+  background: #f1f1f1;
+  border: 2px #2e8b57 solid;
+  font-size: 23px;
+  transition: 0.4s;
+}
+#sendbtn:hover{
+  cursor: pointer;
+  background: #2e8b57;
+  color: #fff;
+}
+.imageholder img{
+  width: 100%;
+  height: 100%;
+  object-fit: scale-down;
+}
 #subtext{
   text-align: center;
   color: #fff;
 }
-.bottom button{
-  width: 150px;
-  height: 150px;
+.truebottom button{
+  width: 200px;
+  height: 50px;
   border: 2px #33b864 solid;
   background: #50c878;
   border-radius: 25px;
   font-size: 32px;
   position: absolute;
-  top: 55%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   color: #fff;
 }
-.bottom button:hover{
+.truebottom button:hover{
   background: #33b864;
   cursor: pointer;
 }
 .truebottom{
+  display: flex;
   background: #2e8b57;
   width: 100%;
-  height: 50px;
+  height: 75px;
   position: absolute;
   bottom: 0;
   color: #fff;
