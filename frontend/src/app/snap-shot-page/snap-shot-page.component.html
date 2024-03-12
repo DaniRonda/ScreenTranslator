@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>WackDonald's Login</title>
-  <link rel="stylesheet" href="snipperStyle.css">
   <link rel="icon" href="images/favicon.ico">
   <script src="https://kit.fontawesome.com/6cff64fb2c.js" crossorigin="anonymous"></script>
 </head>
@@ -17,11 +16,11 @@
   </div>
   <div class="bottom">
     <h2 id="takesnipText">Take Snippet</h2>
-    <button><i class="fa-solid fa-camera"></i></button>
+    <button><fa-icon [icon]="cameraIcon"></fa-icon></button>
   </div>
   <p class="or">or</p>
   <div class="truebottom">
-    <p class="orText">Upload file <i class="fa-solid fa-file-export"></i></p>
+    <p class="orText">Upload file <fa-icon [icon]="exportIcon"></fa-icon></p>
   </div>
 </div>
 <script>
