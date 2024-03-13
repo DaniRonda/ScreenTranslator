@@ -2,26 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>WebSocket Test</title>
+    <title>WebSocket Translation Request</title>
 </head>
 <body>
-<h2>WebSocket Test</h2>
+<h2>WebSocket Translation Test</h2>
+<div>
+    <label for="language">Target Language:</label>
+    <input type="text" id="language" placeholder="e.g., en, fr, hu">
+</div>
+<div>
+    <label for="content">Content:</label>
+    <input type="text" id="content" placeholder="Text to translate">
+</div>
+<button id="send">Send</button>
+
 <div id="messages"></div>
+
 <script>
-    const messagesDiv = document.getElementById('messages');
-
-    function appendMessage(message) {
-        const messageParagraph = document.createElement('p');
-        messageParagraph.textContent = message;
-        messagesDiv.appendChild(messageParagraph);
-    }
-
     const socket = new WebSocket('ws://localhost:5217/ws/translate');
 
     socket.onopen = function(event) {
-        appendMessage('Connection opened');
-
-        socket.send(JSON.stringify({ targetLanguage: 'en', content: 'szeretem a kekszet' }));
+        console.log('Connection opened');
     };
 
     socket.onmessage = function(event) {
@@ -29,8 +30,25 @@
     };
 
     socket.onclose = function(event) {
-        appendMessage('Connection closed');
+        console.log('Connection closed');
     };
+
+    document.getElementById('send').onclick = function() {
+        const language = document.getElementById('language').value;
+        const content = document.getElementById('content').value;
+
+        const message = JSON.stringify({ targetLanguage: language, content: content });
+        socket.send(message);
+
+        console.log('Message sent to the server', message);
+    };
+
+    function appendMessage(message) {
+        const messagesDiv = document.getElementById('messages');
+        const messageParagraph = document.createElement('p');
+        messageParagraph.textContent = message;
+        messagesDiv.appendChild(messageParagraph);
+    }
 </script>
 </body>
 </html>
