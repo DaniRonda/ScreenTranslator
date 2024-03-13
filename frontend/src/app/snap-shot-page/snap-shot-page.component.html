@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>WackDonald's Login</title>
   <link rel="icon" href="images/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.1/cropper.min.css">
   <script src="https://kit.fontawesome.com/6cff64fb2c.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -19,19 +20,23 @@
   </div>
   <div class="bottom">
     <div class="imageholder">
-      <img id="image" src="images/Capture.PNG" alt="">
+      <image-cropper *ngIf="picture" [src]="picture" ></image-cropper>
     </div>
     <div class="toolset">
       <button id="cropbtn"><fa-icon [icon]="checkIcon"></fa-icon></button>
       <button id="sendbtn"><fa-icon [icon]="cropIcon"></fa-icon></button>
     </div>
   </div>
-
   <div class="truebottom">
 
     <button (click)="capture()"><fa-icon [icon]="cameraIcon"></fa-icon></button>
     <p class="orbottom">Or....</p>
-    <p class="orText">Upload file <fa-icon [icon]="exportIcon"></fa-icon></p>
+
+    <label class="orText">
+      <input type="file" (change)="onFileSelected($event)" placeholder="hi">
+      Upload file <fa-icon [icon]="exportIcon"></fa-icon>
+    </label>
+
   </div>
 </div>
 <script>

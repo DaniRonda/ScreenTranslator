@@ -15,7 +15,7 @@ body{
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
-  height: 80%;
+  height: 90%;
   background: #efefef;
   border-radius: 15px;
   border: 1px lightgrey solid;
@@ -24,7 +24,7 @@ body{
   padding: 1%;
   background: #50c878;
   height: 20%;
-  max-height: 100px;
+  max-height: 70px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
@@ -137,9 +137,22 @@ body{
   height: 100%;
   object-fit: scale-down;
 }
+input[type="file"]{
+  display: none;
+}
+.img-preview{
+  background: red;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: 27%;
+  left: 91%;
+  transform: translate(-50%, -50%);
+}
 #subtext{
   text-align: center;
   color: #fff;
+  font-size: 18px;
 }
 .truebottom button{
   width: 200px;
@@ -162,7 +175,7 @@ body{
   display: flex;
   background: #2e8b57;
   width: 100%;
-  height: 75px;
+  height: 65px;
   position: absolute;
   bottom: 0;
   color: #fff;

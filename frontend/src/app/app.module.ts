@@ -5,11 +5,13 @@ import {BrowserModule} from "@angular/platform-browser";
 import { SnapShotPageComponent } from './snap-shot-page/snap-shot-page.component';
 import { SelectLanguagePageComponent } from './select-language-page/select-language-page.component';
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {ImageCroppperComponent} from "./cropper/image-croppper.component";
 @NgModule({
   declarations: [
     AppComponent,
     SnapShotPageComponent,
-    SelectLanguagePageComponent
+    SelectLanguagePageComponent,
+    ImageCroppperComponent,
   ],
   imports: [
     AppRoutingModule,
