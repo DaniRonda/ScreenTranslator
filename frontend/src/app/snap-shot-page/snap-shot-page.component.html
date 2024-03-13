@@ -9,6 +9,7 @@
   <script src="https://kit.fontawesome.com/6cff64fb2c.js" crossorigin="anonymous"></script>
 </head>
 <body>
+<ng-container *ngIf="openModal">
 <div class="center">
   <div class="top">
     <h1>Translate</h1>
@@ -34,8 +35,5 @@
     <p class="orText">Upload file <fa-icon [icon]="exportIcon"></fa-icon></p>
   </div>
 </div>
-<script>
-  // When the user clicks on div, open the popup
-
-</script>
+</ng-container>
 </body>

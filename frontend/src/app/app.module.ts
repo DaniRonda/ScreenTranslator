@@ -2,10 +2,13 @@
 import {AppComponent} from "./app.component";
 import {AppRoutingModule} from "./app.routes";
 import {BrowserModule} from "@angular/platform-browser";
-import { SnapShotPageComponent } from './snap-shot-page/snap-shot-page.component';
-import { SelectLanguagePageComponent } from './select-language-page/select-language-page.component';
+import {SnapShotPageComponent} from './snap-shot-page/snap-shot-page.component';
+import {SelectLanguagePageComponent} from './select-language-page/select-language-page.component';
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {HttpClientModule} from "@angular/common/http";
+import {MatDialogModule} from "@angular/material/dialog";
+import {TranslationService} from "../services/translation.service";
+import {LanguageService} from "../services/language.service";
 
 
 @NgModule({
@@ -18,13 +21,15 @@ import {HttpClientModule} from "@angular/common/http";
     AppRoutingModule,
     BrowserModule,
     FaIconComponent,
-    HttpClientModule
-
+    HttpClientModule,
+    MatDialogModule,
 
   ],
-  providers: [],
+  providers: [TranslationService,
+    LanguageService],
 
   bootstrap: [AppComponent],
 })
 
-export class AppModule { }
+export class AppModule {
+}
