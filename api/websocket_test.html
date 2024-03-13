@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Test</title>
+</head>
+<body>
+<h2>WebSocket Test</h2>
+<div id="messages"></div>
+<script>
+    const messagesDiv = document.getElementById('messages');
+
+    function appendMessage(message) {
+        const messageParagraph = document.createElement('p');
+        messageParagraph.textContent = message;
+        messagesDiv.appendChild(messageParagraph);
+    }
+
+    const socket = new WebSocket('ws://localhost:5217/ws/translate');
+
+    socket.onopen = function(event) {
+        appendMessage('Connection opened');
+
+        socket.send(JSON.stringify({ targetLanguage: 'en', content: 'szeretem a kekszet' }));
+    };
+
+    socket.onmessage = function(event) {
+        appendMessage('Message from server: ' + event.data);
+    };
+
+    socket.onclose = function(event) {
+        appendMessage('Connection closed');
+    };
+</script>
+</body>
+</html>

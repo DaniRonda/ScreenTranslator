@@ -1,3 +1,5 @@
+using api;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,6 +12,27 @@ builder.Services.AddHttpClient();
 
 
 var app = builder.Build();
+app.UseWebSockets();
+
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path == "/ws/translate") // Your WebSocket endpoint
+    {
+        if (context.WebSockets.IsWebSocketRequest)
+        {
+            var webSocketHandler = new WebSocketHandler();
+            await webSocketHandler.HandleWebSocketAsync(context);
+        }
+        else
+        {
+            context.Response.StatusCode = 400;
+        }
+    }
+    else
+    {
+        await next();
+    }
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
