@@ -16,7 +16,7 @@ app.UseWebSockets();
 
 app.Use(async (context, next) =>
 {
-    if (context.Request.Path == "/ws/translate") // Your WebSocket endpoint
+    if (context.Request.Path == "/ws/translate")
     {
         if (context.WebSockets.IsWebSocketRequest)
         {
