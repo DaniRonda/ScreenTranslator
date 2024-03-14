@@ -1,4 +1,5 @@
 ﻿export const environment = {
-  websocketBaseUrl: ' ', //add a web socken url
-  production: true
-}
+  baseUrl: 'http://localhost:5217/api/Translation/Translate',
+  production: true,
+  translatorKey: 'b38e92b1d93a4d1f89cf9fcda7c6deeb'
+};

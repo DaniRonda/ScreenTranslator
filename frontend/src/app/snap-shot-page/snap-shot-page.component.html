@@ -10,13 +10,14 @@
   <script src="https://kit.fontawesome.com/6cff64fb2c.js" crossorigin="anonymous"></script>
 </head>
 <body>
+<ng-container *ngIf="openModal">
 <div class="center">
   <div class="top">
     <h1>Translate</h1>
     <h2 id="subtext">grab a snippet of the text you'd like translated using the button below. simply make sure all the text is visable and nothing else</h2>
   </div>
   <div class="middle">
-
+    <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
   </div>
   <div class="bottom">
     <div class="imageholder">
@@ -39,8 +40,5 @@
 
   </div>
 </div>
-<script>
-  // When the user clicks on div, open the popup
-
-</script>
+</ng-container>
 </body>

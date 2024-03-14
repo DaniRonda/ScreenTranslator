@@ -1,12 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { faEarthAmerica } from '@fortawesome/free-solid-svg-icons';
+import {MatDialog} from "@angular/material/dialog";
+import {SnapShotPageComponent} from "../snap-shot-page/snap-shot-page.component";
+import {LanguageService} from "../../services/language.service";
 @Component({
   templateUrl: 'select-language-page.component.html',
   styleUrls: ['select-language-page.component.css']
 })
-export class SelectLanguagePageComponent{
+export class SelectLanguagePageComponent implements OnInit{
   earthIcon = faEarthAmerica;
-  constructor() { }
+
+
+  constructor(
+    public dialog: MatDialog,
+    public languageService: LanguageService
+  ) {}
 
   ngOnInit(): void {
     const dropdowns = document.querySelectorAll('.dropdown');
@@ -79,5 +87,20 @@ export class SelectLanguagePageComponent{
       this.inputBox.value = list.innerHTML;
     if (this.resultBox)
       this.resultBox.innerHTML = '';
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(SnapShotPageComponent, {
+      width: '1000px',
+      height: '900px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  selectLanguage(language: string): void {
+    this.languageService.setSelectedLanguage(language);
   }
 }

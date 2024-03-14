@@ -30,16 +30,18 @@
         <span class="selected">English</span>
         <div class="caret"></div>
       </div>
+
       <ul class="menu">
-        <li class="active">English</li>
-        <li>Danish</li>
-        <li>German</li>
-        <li>Spanish</li>
-        <li>French</li>
-        <li>Dutch</li>
-        <li>Italian</li>
-        <li>Polish</li>
+        <li class="active" (click)="selectLanguage('English')">English</li>
+        <li (click)="selectLanguage('Danish')">Danish</li>
+        <li (click)="selectLanguage('German')">German</li>
+        <li (click)="selectLanguage('Spanish')">Spanish</li>
+        <li (click)="selectLanguage('French')">French</li>
+        <li (click)="selectLanguage('Dutch')">Dutch</li>
+        <li (click)="selectLanguage('Italian')">Italian</li>
+        <li (click)="selectLanguage('Polish')">Polish</li>
       </ul>
+
     </div>
 
   </form>
@@ -52,7 +54,7 @@
 
     </div>
   </div>
-  <input type="submit" value="Submit" onclick="login()">
+  <input type="submit" value="Submit" (click)="openDialog()">
 </div>
 <div class="center2">
   <img src="assets/human.png" alt="">
