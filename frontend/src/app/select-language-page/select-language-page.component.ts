@@ -88,19 +88,22 @@ export class SelectLanguagePageComponent implements OnInit{
     if (this.resultBox)
       this.resultBox.innerHTML = '';
   }
+  openDialog(): void {
+    const selectedLanguage = this.languageService.getSelectedLanguage();
+    console.log('Selected language:', selectedLanguage);
 
-  openDialog() {
-    const dialogRef = this.dialog.open(SnapShotPageComponent, {
+    const dialog = this.dialog.open(SnapShotPageComponent, {
       width: '1000px',
-      height: '900px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      height: '900px',
+      data: { selectedLanguage: selectedLanguage }
     });
   }
 
-  selectLanguage(language: string): void {
+  selectLanguage(language: string) {
     this.languageService.setSelectedLanguage(language);
   }
+
+
+
 }
+

@@ -11,6 +11,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {MatDialogModule} from "@angular/material/dialog";
 import {TranslationService} from "../services/translation.service";
 import {LanguageService} from "../services/language.service";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import {LanguageService} from "../services/language.service";
     FaIconComponent,
     HttpClientModule,
     MatDialogModule,
+    ReactiveFormsModule,
 
   ],
   providers: [TranslationService,

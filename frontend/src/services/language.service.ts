@@ -6,12 +6,20 @@ import { Injectable } from '@angular/core';
 })
 export class LanguageService {
   selectedLanguage: string = '';
-  availableLanguages: string[] = ['English', 'Danish', 'German', 'French', 'Spanish', 'Italian', 'Polish'];
+  availableLanguages: { [key: string]: string } = {
+    'English': 'en',
+    'Danish': 'da',
+    'German': 'de',
+    'French': 'fr',
+    'Spanish': 'es',
+    'Italian': 'it',
+    'Polish': 'pl'
+  };
 
   constructor() { }
 
   setSelectedLanguage(language: string): void {
-    this.selectedLanguage = language;
+    this.selectedLanguage = this.availableLanguages[language] || '';
   }
 
   getSelectedLanguage(): string {
@@ -19,6 +27,6 @@ export class LanguageService {
   }
 
   getAvailableLanguages(): string[] {
-    return this.availableLanguages;
+    return Object.keys(this.availableLanguages);
   }
 }

@@ -1,4 +1,10 @@
-﻿export interface DetectedLanguage {
+﻿
+export class CaptureText{
+  language?: string;
+  imageBase?: string;
+}
+
+export interface DetectedLanguage {
   Language: string;
   Score: number;
 }
