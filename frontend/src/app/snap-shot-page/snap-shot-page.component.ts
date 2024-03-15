@@ -95,7 +95,7 @@ export class SnapShotPageComponent implements OnInit {
 
   async capture(): Promise<string> {
     try {
-
+      const image = document.getElementById("image") as HTMLImageElement;
       const stream = await navigator.mediaDevices.getDisplayMedia({});
       const vid = document.createElement("video");
       const canvas = document.createElement("canvas");
@@ -110,6 +110,7 @@ export class SnapShotPageComponent implements OnInit {
             stream.getVideoTracks()[0].stop();
             let base64Image = canvas.toDataURL("image/png");
             resolve(base64Image);
+            this.picture = canvas.toDataURL("imageSource");
           } else {
             stream.getVideoTracks()[0].stop();
             reject(new Error("Unable to get 2D context for canvas."));
