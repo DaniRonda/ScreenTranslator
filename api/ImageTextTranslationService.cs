@@ -19,7 +19,7 @@ namespace api
             _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _computerVisionKey);
         }
 
-        public async Task<object> AnalyzeImageAsync(string imageUrl, string targetLanguage)
+        public async Task<string> AnalyzeImageAsync(string imageUrl, string targetLanguage)
         {
             var requestUri = "/computervision/imageanalysis:analyze?features=caption,read&model-version=latest&language=en&api-version=2024-02-01";
 
@@ -34,13 +34,8 @@ namespace api
 
             var translator = new AzureTranslator(targetLanguage, text, _httpClient);
             var translationJson = await translator.TranslateAsync();
-
-            return new
-            {
-                translation = JsonConvert.DeserializeObject<object>(translationJson)
-            };
+            return translationJson;
         }
-
 
 
 
