@@ -1,5 +1,3 @@
-
-
 import {Component, ElementRef, Input, ViewChild, Inject, OnInit} from '@angular/core';
 import {faCamera, faEarthAmerica, faFileExport, faCheck, faCrop} from '@fortawesome/free-solid-svg-icons';
 import Cropper from "cropperjs";
@@ -8,7 +6,11 @@ import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
 import {TranslationService} from "../../services/translation.service";
 import {LanguageService} from "../../services/language.service";
 import {CaptureText} from "../../models/translation-request";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
+import {ImageCroppperComponent} from '../cropper/image-croppper.component';
+import {ImageCroppperService} from '../../services/image.croppper.service';
+import {Subscription} from 'rxjs';
+import { ErrorMessageService } from '../../services/error.Service';
 
 @Component({
   selector: 'app-snap-shot-page',
@@ -26,70 +28,74 @@ export class SnapShotPageComponent implements OnInit {
   cropIcon = faCrop;
   protected readonly earthIcon = faEarthAmerica;
 
-
-  @ViewChild("image", { static: false })
+  @ViewChild("image", {static: false})
   public imageElement: ElementRef | any;
 
   @Input("src")
   public imageSource: string | any;
-
-  public imageDestination: string;
   private cropper: Cropper | any;
-
-
-  picture: string = '';
-  public ngAfterViewInit() {
-    this.cropper = new Cropper(this.imageElement.nativeElement, {
-      zoomable: false,
-      scalable: false,
-      aspectRatio: 1,
-      crop: () => {
-        const canvas = this.cropper.getCroppedCanvas();
-        this.imageDestination = canvas.toDataURL("image/png");
-      }
-    });
-  }
   picture1: string | ArrayBuffer | null = null;
 
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    this.picture = "";
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.picture = reader.result as string; // Cast result to string since we know it's either a string or an ArrayBuffer
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-
-
-
-
-
-
   openModal = false;
-  errorMessage: any;
-  selectedLanguage: string = '';
   createNewTextForm: FormGroup;
+  private imageSubscription: Subscription | undefined;
+  imageBase: string | undefined;
+  public imageDestination: string;
+
 
   constructor(
     private languageService: LanguageService,
     private translationService: TranslationService,
+    private imageCropperService: ImageCroppperService,
+    private errorMessageService: ErrorMessageService,
     private fb: FormBuilder
   ) {
 
     this.createNewTextForm = this.fb.group({
-      language: ['', [Validators.required, this.languageValidator]],
-      imageBase: ['', Validators.required, this.base64Validator],
+      language: ['', [Validators.required, this.validateLanguage.bind(this)]],
+      imageBase: ['', [Validators.required, this.validateImage.bind(this)]],
     });
     this.openModal = true;
     this.imageDestination = "";
   }
 
-  ngOnInit(): void {
-    this.openModal = true;
+  ngOnInit() {
+    this.imageSubscription = this.imageCropperService.croppedImage$.subscribe((croppedImage) => {
+      this.imageBase = croppedImage;
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.imageSubscription) {
+      this.imageSubscription.unsubscribe();
+    }
+  }
+
+
+  public ngAfterViewInit() {
+    if (this.imageElement) {
+      this.cropper = new Cropper(this.imageElement.nativeElement, {
+        zoomable: true,
+        scalable: false,
+        crop: () => {
+          const canvas = this.cropper.getCroppedCanvas();
+          this.imageDestination = canvas.toDataURL("imageSource");
+        }
+      });
+    }
+  }
+
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    this.imageBase = "";
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imageBase = reader.result as string; // Cast result to string since we know it's either a string or an ArrayBuffer
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
 
@@ -110,7 +116,7 @@ export class SnapShotPageComponent implements OnInit {
             stream.getVideoTracks()[0].stop();
             let base64Image = canvas.toDataURL("image/png");
             resolve(base64Image);
-            this.picture = canvas.toDataURL("imageSource");
+            this.imageBase = canvas.toDataURL("imageSource");
           } else {
             stream.getVideoTracks()[0].stop();
             reject(new Error("Unable to get 2D context for canvas."));
@@ -119,7 +125,7 @@ export class SnapShotPageComponent implements OnInit {
 
         vid.srcObject = stream;
         vid.play();
-        this.picture = '';
+        this.imageBase = '';
       });
 
     } catch (error) {
@@ -128,74 +134,43 @@ export class SnapShotPageComponent implements OnInit {
     }
   }
 
-  upload(){
-
-  }
-
-
   async captureAndTranslate() {
-    if (this.createNewTextForm.valid) {
-      try {
-        const imageBase64 = await this.capture();
+    /*if (this.createNewTextForm.valid) {
+      console.log('Form is valid.');
+*/
+    try {
+        const imageBase64 = this.imageBase;
+        console.log('Cropped image:', imageBase64);
+
         const selectedLanguage = this.languageService.getSelectedLanguage();
+        console.log('Selected language:', selectedLanguage);
 
         const text: CaptureText = {
           language: selectedLanguage,
           imageBase: imageBase64
         };
 
+        console.log('Text to be translated:', text);
+
         const translationResponse = await this.translationService.translateText(text).toPromise();
         console.log('Translation response:', translationResponse);
-
       } catch (error) {
         console.error('Error capturing and translating text:', error);
       }
-    } else {
+    /*} else {
+
       console.log('Form is not valid. Please fill in all required fields.');
-    }
+    }*/
   }
 
-
-  //after capture() and before captureandtranslate()
-  //Update the form with the captured image data
-  async updateImgData() {
-    try {
-      const imageBase64 = await this.capture();
-      this.createNewTextForm.patchValue({
-        imageBase: imageBase64
-      });
-    } catch (error) {
-      console.error('Error capturing screen:', error);
-    }
+  validateImage(control: AbstractControl): ValidationErrors | null {
+    const errorMessage = this.errorMessageService.base64Validator(control.value);
+    return errorMessage ? { 'invalidImage': errorMessage } : null;
   }
 
-
-  base64Validator(control: FormControl): { [key: string]: any } | null {
-    if (!control.value) {
-      return {required: 'Image data is required.'};
-    }
-
-    if (!control.value.startsWith('data:image')) {
-      return {invalidImageFormat: 'Invalid image format. Please provide a valid image.'};
-    }
-
-    const maxLength = 5000000;
-    if (control.value.length > maxLength) {
-      return {maxLengthExceeded: 'Maximum file size exceeded. Please upload a smaller image.'};
-    }
-
-    return null;
-  }
-
-  languageValidator(control: FormControl): { [key: string]: any } | null {
-    const validLanguages = ['English', 'Spanish', 'French', 'German', 'Italian', 'Danish', 'Polish'];
-    const selectedLanguage = control.value;
-
-    if (!validLanguages.includes(selectedLanguage)) {
-      return { invalidLanguage: 'Please select a valid language.' };
-    }
-
-    return null;
+  validateLanguage(control: AbstractControl): ValidationErrors | null {
+    const errorMessage = this.errorMessageService.languageValidator(control.value);
+    return errorMessage ? { 'invalidLanguage': errorMessage } : null;
   }
 
 }

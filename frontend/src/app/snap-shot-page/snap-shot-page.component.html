@@ -17,20 +17,24 @@
     <h2 id="subtext">Grab a snippet of the text you'd like translated using the button below. Simply make sure all the text is visible and nothing else.</h2>
   </div>
   <div class="middle">
-    <form [formGroup]="createNewTextForm" (ngSubmit)="captureAndTranslate()">
+    <form [formGroup]="createNewTextForm">
       <input type="hidden" formControlName="imageBase">
-
-      <button type="submit">Capture and Translate</button>
+      <div *ngIf="createNewTextForm.controls['language'].invalid && createNewTextForm.controls['language'].touched" class="error-message">
+        Language is required.
+      </div>
+      <div *ngIf="createNewTextForm.controls['imageBase'].invalid && createNewTextForm.controls['imageBase'].touched" class="error-message">
+        Image is required.
+      </div>
     </form>
   </div>
 
   <div class="bottom">
     <div class="imageholder">
-      <image-cropper *ngIf="picture" [src]="picture" ></image-cropper>
+      <image-cropper *ngIf="imageBase" [src]="imageBase" ></image-cropper>
     </div>
 
     <div class="toolset">
-      <button id="cropbtn"><fa-icon [icon]="checkIcon"></fa-icon></button>
+      <button id="cropbtn" (click)="captureAndTranslate()"><fa-icon [icon]="checkIcon"></fa-icon></button>
       <button id="sendbtn"><fa-icon [icon]="cropIcon"></fa-icon></button>
     </div>
   </div>
@@ -42,9 +46,9 @@
       <input type="file" (change)="onFileSelected($event)" placeholder="hi">
       Upload file <fa-icon [icon]="exportIcon"></fa-icon>
     </label>
-
   </div>
 </div>
+
 
 
 
