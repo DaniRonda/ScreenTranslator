@@ -1038,26 +1038,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\doini\\.nuget\\packages\\": {}
+    "C:\\Users\\benja\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\doini\\3rd semester\\SpiceGirls\\api\\api.csproj",
+      "projectUniqueName": "C:\\Users\\benja\\firstApi\\SpiceGirls\\api\\api.csproj",
       "projectName": "api",
-      "projectPath": "C:\\Users\\doini\\3rd semester\\SpiceGirls\\api\\api.csproj",
-      "packagesPath": "C:\\Users\\doini\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\doini\\3rd semester\\SpiceGirls\\api\\obj\\",
+      "projectPath": "C:\\Users\\benja\\firstApi\\SpiceGirls\\api\\api.csproj",
+      "packagesPath": "C:\\Users\\benja\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\benja\\firstApi\\SpiceGirls\\api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\doini\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\benja\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

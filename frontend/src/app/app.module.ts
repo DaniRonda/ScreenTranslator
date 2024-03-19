@@ -20,6 +20,7 @@ import {Cloudinary} from "@cloudinary/url-gen";
 
 
 import {CloudinaryModule, } from '@cloudinary/ng';
+import { TranslatedTextComponent } from "./translatedTextModal/translatedText";
 
 
 
@@ -30,6 +31,7 @@ import {CloudinaryModule, } from '@cloudinary/ng';
     SnapShotPageComponent,
     SelectLanguagePageComponent,
     ImageCroppperComponent,
+    TranslatedTextComponent,
   ],
   imports: [
     AppRoutingModule,

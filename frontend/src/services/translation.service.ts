@@ -1,7 +1,7 @@
 ﻿import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../environments/environment";
-import {CaptureText, CaptureText2, TranslationRequest, TranslationResponse} from "../models/translation-request";
+import {CaptureText, CaptureText2, TranslationRequest, TranslationResponse, Translation} from "../models/translation-request";
 import {catchError, Observable, throwError} from "rxjs";
 
 @Injectable({
@@ -24,6 +24,7 @@ export class TranslationService {
         return throwError('Something went wrong. Please try again later.');
       })
     );
+
   }
   translateText2(text: CaptureText2): Observable<TranslationResponse> {
     const request: TranslationRequest = {
@@ -37,6 +38,9 @@ export class TranslationService {
         return throwError('Something went wrong. Please try again later.');
       })
     );
+  }
+  getTranslation(): Observable<Translation> {
+    return this.http.get<Translation>(environment.baseUrl + 'Translation/Translate');
   }
 }
 

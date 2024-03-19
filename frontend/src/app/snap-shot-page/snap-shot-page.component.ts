@@ -15,6 +15,7 @@ import {Subscription} from 'rxjs';
 import { ErrorMessageService } from '../../services/error.Service';
 import {Cloudinary, CloudinaryImage} from "@cloudinary/url-gen";
 import { CloudinaryService } from '../../services/cloudinary.service';
+import { TranslatedTextComponent } from '../translatedTextModal/translatedText';
 
 
 @Component({
@@ -64,6 +65,7 @@ export class SnapShotPageComponent implements OnInit {
     private errorMessageService: ErrorMessageService,
     private cloudinaryService : CloudinaryService,
     private fb: FormBuilder,
+    public dialog: MatDialog,
   ) {
 
     this.createNewTextForm = this.fb.group({
@@ -221,6 +223,7 @@ export class SnapShotPageComponent implements OnInit {
 
       const translationResponse = await this.translationService.translateText(text).toPromise();
       console.log('Translation response:', translationResponse);
+          this.openTextModal()
     }
 
        catch (error) {
@@ -246,6 +249,7 @@ export class SnapShotPageComponent implements OnInit {
 
           const translationResponse = await this.translationService.translateText2(text).toPromise();
           console.log('Translation response:', translationResponse);
+          this.openTextModal()
         } catch (error) {
           console.error('Error capturing and translating text:', error);
         }
@@ -355,8 +359,12 @@ imageCropper = document.getElementById("imageCropper")
     const imageHolderDiv = this.elementRef.nativeElement.querySelector('.imageholder');
     this.renderer.appendChild(imageHolderDiv, textarea);
   }
-  sendHttp(){
-
+  openTextModal(){
+    const dialog = this.dialog.open(TranslatedTextComponent, {
+      width: '800px',
+      height: '800px',
+      data: {  }
+    });
   }
 }
 
