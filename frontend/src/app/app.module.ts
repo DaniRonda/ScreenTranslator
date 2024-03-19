@@ -13,6 +13,7 @@ import {TranslationService} from "../services/translation.service";
 import {LanguageService} from "../services/language.service";
 import {ReactiveFormsModule} from "@angular/forms";
 import { ImageCroppperService } from "../services/image.croppper.service";
+import { ErrorMessageService } from "../services/error.Service";
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { ImageCroppperService } from "../services/image.croppper.service";
   providers: [TranslationService,
     LanguageService,
     ImageCroppperService,
+    ErrorMessageService,
   ],
 
   bootstrap: [AppComponent],

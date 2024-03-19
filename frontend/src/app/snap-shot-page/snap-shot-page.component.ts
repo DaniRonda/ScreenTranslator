@@ -32,6 +32,7 @@ export class SnapShotPageComponent implements OnInit {
   textIcon = faFont;
   protected readonly earthIcon = faEarthAmerica;
   imageIsOn = true;
+  contentText = "";
 
   @ViewChild(ImageCroppperComponent) cropperComponent: ImageCroppperComponent | undefined;
   imageCropperElement = document.getElementById('imageholder')
@@ -182,32 +183,43 @@ export class SnapShotPageComponent implements OnInit {
 
 
   async captureAndTranslate() {
-    if (this.createNewTextForm.valid) {
-    console.log('Form is valid.');
+    console.log("eyu")
+    console.log(this.imageIsOn)
 
-    try {
-      const imageBase64 = this.imageBase;
-      console.log('Cropped image:', imageBase64);
+    if (this.imageIsOn == true){
+      console.log("oi")
+      if (this.createNewTextForm.valid) {
+        console.log('Form is valid.');
 
-      const selectedLanguage = this.languageService.getSelectedLanguage();
-      console.log('Selected language:', selectedLanguage);
+        try {
+          const imageBase64 = this.imageBase;
+          console.log('Cropped image:', imageBase64);
 
-      const text: CaptureText = {
-        language: selectedLanguage,
-        imageBase: imageBase64
-      };
+          const selectedLanguage = this.languageService.getSelectedLanguage();
+          console.log('Selected language:', selectedLanguage);
 
-      console.log('Text to be translated:', text);
+          const text: CaptureText = {
+            language: selectedLanguage,
+            imageBase: imageBase64
+          };
 
-      const translationResponse = await this.translationService.translateText(text).toPromise();
-      console.log('Translation response:', translationResponse);
-    } catch (error) {
-      console.error('Error capturing and translating text:', error);
+          console.log('Text to be translated:', text);
+
+          const translationResponse = await this.translationService.translateText(text).toPromise();
+          console.log('Translation response:', translationResponse);
+        } catch (error) {
+          console.error('Error capturing and translating text:', error);
+        }
+      } else {
+
+        console.log('Form is not valid. Please fill in all required fields.');
+      }
     }
-    } else {
-
-    console.log('Form is not valid. Please fill in all required fields.');
-  }
+    if (this.imageIsOn == false){
+      console.log("heyooi")
+      const content = document.getElementById('comment_text')!.innerHTML ;
+      console.log(document.getElementById('comment_text')!.innerText);
+    }
 }
 
 
