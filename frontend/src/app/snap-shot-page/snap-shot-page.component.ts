@@ -6,7 +6,7 @@ import {HttpClient} from "@angular/common/http";
 import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
 import {TranslationService} from "../../services/translation.service";
 import {LanguageService} from "../../services/language.service";
-import {CaptureText} from "../../models/translation-request";
+import {CaptureText, CaptureText2} from "../../models/translation-request";
 
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {ImageCroppperComponent} from '../cropper/image-croppper.component';
@@ -182,12 +182,18 @@ export class SnapShotPageComponent implements OnInit {
 
 
   async captureAndTranslate() {
+<<<<<<< Updated upstream
     if (this.createNewTextForm.valid) {
     console.log('Form is valid.');
 
     try {
       const imageBase64 = this.imageBase;
       console.log('Cropped image:', imageBase64);
+=======
+    if (this.imageIsOn == true){
+      if (this.createNewTextForm.valid) {
+        console.log('Form is valid.');
+>>>>>>> Stashed changes
 
       const selectedLanguage = this.languageService.getSelectedLanguage();
       console.log('Selected language:', selectedLanguage);
@@ -199,10 +205,48 @@ export class SnapShotPageComponent implements OnInit {
 
       console.log('Text to be translated:', text);
 
+<<<<<<< Updated upstream
       const translationResponse = await this.translationService.translateText(text).toPromise();
       console.log('Translation response:', translationResponse);
     } catch (error) {
       console.error('Error capturing and translating text:', error);
+=======
+          console.log('Text to be translated:', text);
+
+          const translationResponse = await this.translationService.translateText(text).toPromise();
+          console.log('Translation response:', translationResponse);
+        } catch (error) {
+          console.error('Error capturing and translating text:', error);
+        }
+      } else {
+
+        console.log('Form is not valid. Please fill in all required fields.');
+      }
+    }
+    if (this.imageIsOn == false) {
+      const textareaElement = document.getElementById('comment_text') as HTMLTextAreaElement;
+      if (textareaElement) {
+        try {
+          const content = textareaElement.value;
+
+          const selectedLanguage = this.languageService.getSelectedLanguage();
+
+          const text: CaptureText2 = {
+            language: selectedLanguage,
+            content: content
+          };
+          
+          const translationResponse = await this.translationService.translateText2(text).toPromise();
+          console.log('Translation response:', translationResponse);
+        } catch (error) {
+          console.error('Error capturing and translating text:', error);
+        }
+      } else {
+
+        console.log('Form is not valid. Please fill in all required fields.');
+      }
+
+>>>>>>> Stashed changes
     }
     } else {
 

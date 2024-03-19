@@ -13,6 +13,11 @@ import {TranslationService} from "../services/translation.service";
 import {LanguageService} from "../services/language.service";
 import {ReactiveFormsModule} from "@angular/forms";
 import { ImageCroppperService } from "../services/image.croppper.service";
+<<<<<<< Updated upstream
+=======
+import { ErrorMessageService } from "../services/error.Service";
+import {Cloudinary} from "@cloudinary/url-gen"
+>>>>>>> Stashed changes
 
 
 @NgModule({
@@ -29,6 +34,7 @@ import { ImageCroppperService } from "../services/image.croppper.service";
     HttpClientModule,
     MatDialogModule,
     ReactiveFormsModule,
+
 
   ],
   providers: [TranslationService,

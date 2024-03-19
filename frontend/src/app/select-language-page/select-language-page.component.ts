@@ -9,6 +9,7 @@ import {LanguageService} from "../../services/language.service";
 })
 export class SelectLanguagePageComponent implements OnInit{
   earthIcon = faEarthAmerica;
+
   constructor(
     public dialog: MatDialog,
     public languageService: LanguageService
