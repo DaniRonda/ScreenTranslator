@@ -28,9 +28,14 @@ export class ImageCroppperComponent implements OnInit {
       crop: () => {
         const canvas = this.cropper.getCroppedCanvas();
         this.imageDestination = canvas.toDataURL("imageSource");
+        console.log("hi" + this.imageDestination);
       }
     });
   }
 
   public ngOnInit() { }
+
+  printcheck2(){
+    console.log("hi")
+  }
 }

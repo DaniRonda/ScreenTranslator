@@ -17,21 +17,20 @@
     <h2 id="subtext">Grab a snippet of the text you'd like translated using the button below. Simply make sure all the text is visible and nothing else.</h2>
   </div>
   <div class="middle">
-    <form [formGroup]="createNewTextForm" (ngSubmit)="captureAndTranslate()">
-      <input type="hidden" formControlName="imageBase">
 
-      <button type="submit">Capture and Translate</button>
-    </form>
   </div>
 
   <div class="bottom">
-    <div class="imageholder">
-      <image-cropper *ngIf="picture" [src]="picture" ></image-cropper>
+
+    <div class="imageholder" id="imageholder">
+      <textarea id="comment_text"></textarea>
+      <image-cropper *ngIf="imageBase" [src]="imageBase" id="imageCropper" (load)="onImageCropperInit()"></image-cropper>
     </div>
 
     <div class="toolset">
-      <button id="cropbtn"><fa-icon [icon]="checkIcon"></fa-icon></button>
-      <button id="sendbtn"><fa-icon [icon]="cropIcon"></fa-icon></button>
+      <button id="cropbtn"><fa-icon [icon]="checkIcon" (click)="sendHttp()"></fa-icon></button>
+      <button id="sendbtn"><fa-icon [icon]="cameraIcon" (click)="imageOn()"></fa-icon></button>
+      <button id="textbtn"><fa-icon [icon]="textIcon" (click)="textOn()"></fa-icon></button>
     </div>
   </div>
   <div class="truebottom">
