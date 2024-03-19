@@ -14,6 +14,9 @@ import {LanguageService} from "../services/language.service";
 import {ReactiveFormsModule} from "@angular/forms";
 import { ImageCroppperService } from "../services/image.croppper.service";
 
+import {CloudinaryModule, } from '@cloudinary/ng';
+
+
 
 @NgModule({
   declarations: [
@@ -29,6 +32,7 @@ import { ImageCroppperService } from "../services/image.croppper.service";
     HttpClientModule,
     MatDialogModule,
     ReactiveFormsModule,
+    CloudinaryModule,
 
   ],
   providers: [TranslationService,
