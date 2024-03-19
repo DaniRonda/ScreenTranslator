@@ -12,6 +12,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {TranslationService} from "../services/translation.service";
 import {LanguageService} from "../services/language.service";
 import {ReactiveFormsModule} from "@angular/forms";
+import { ImageCroppperService } from "../services/image.croppper.service";
 
 
 @NgModule({
@@ -31,7 +32,9 @@ import {ReactiveFormsModule} from "@angular/forms";
 
   ],
   providers: [TranslationService,
-    LanguageService],
+    LanguageService,
+    ImageCroppperService,
+  ],
 
   bootstrap: [AppComponent],
 })

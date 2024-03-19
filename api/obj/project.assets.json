@@ -472,27 +472,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\balin\\.nuget\\packages\\": {}
+    "C:\\Users\\benja\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\balin\\OneDrive\\Dokumentumok\\Arduino\\fastestPlayer\\SpiceGirls\\api\\api.csproj",
+      "projectUniqueName": "C:\\Users\\benja\\firstApi\\SpiceGirls\\api\\api.csproj",
       "projectName": "api",
-      "projectPath": "C:\\Users\\balin\\OneDrive\\Dokumentumok\\Arduino\\fastestPlayer\\SpiceGirls\\api\\api.csproj",
-      "packagesPath": "C:\\Users\\balin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\balin\\OneDrive\\Dokumentumok\\Arduino\\fastestPlayer\\SpiceGirls\\api\\obj\\",
+      "projectPath": "C:\\Users\\benja\\firstApi\\SpiceGirls\\api\\api.csproj",
+      "packagesPath": "C:\\Users\\benja\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\benja\\firstApi\\SpiceGirls\\api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\balin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\benja\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -505,11 +502,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -544,7 +536,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.103/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
