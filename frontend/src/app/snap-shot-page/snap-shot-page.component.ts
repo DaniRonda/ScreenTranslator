@@ -1,5 +1,4 @@
 
-
 import {Component, ElementRef, Input, ViewChild, Inject, OnInit, Renderer2} from '@angular/core';
 import {faCamera, faEarthAmerica, faFileExport, faCheck, faCrop, faFont} from '@fortawesome/free-solid-svg-icons';
 import Cropper from "cropperjs";
@@ -8,8 +7,13 @@ import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
 import {TranslationService} from "../../services/translation.service";
 import {LanguageService} from "../../services/language.service";
 import {CaptureText} from "../../models/translation-request";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {ImageCroppperComponent} from "../cropper/image-croppper.component";
+
+import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
+import {ImageCroppperComponent} from '../cropper/image-croppper.component';
+import {ImageCroppperService} from '../../services/image.croppper.service';
+import {Subscription} from 'rxjs';
+import { ErrorMessageService } from '../../services/error.Service';
+
 
 @Component({
   selector: 'app-snap-shot-page',
@@ -36,8 +40,6 @@ export class SnapShotPageComponent implements OnInit {
 
   @Input("src")
   public imageSource: string | any;
-
-  public imageDestination: string;
   private cropper: Cropper | any;
   private isImageCropperInitialized = false;
   imagenum = 0;
@@ -62,26 +64,33 @@ export class SnapShotPageComponent implements OnInit {
 
 
   openModal = false;
-  errorMessage: any;
-  selectedLanguage: string = '';
   createNewTextForm: FormGroup;
+
   createNewFormText: FormGroup;
   canvas2: HTMLCanvasElement | null;
+
+  private imageSubscription: Subscription | undefined;
+
+  public imageDestination: string;
+
 
   constructor(
     private languageService: LanguageService,
     private translationService: TranslationService,
-    private fb: FormBuilder,
+
     private renderer: Renderer2, private elementRef: ElementRef,
+    private imageCropperService: ImageCroppperService,
+    private errorMessageService: ErrorMessageService,
+    private fb: FormBuilder,
   ) {
 
     this.createNewTextForm = this.fb.group({
-      language: ['', [Validators.required, this.languageValidator]],
-      imageBase: ['', Validators.required, this.base64Validator],
+      //language: ['', [Validators.required, this.validateLanguage.bind(this)]],
+      //imageBase: ['', [Validators.required, this.validateImage.bind(this)]],
     });
     this.createNewFormText = this.fb.group({
-      language: ['', [Validators.required, this.languageValidator]],
-      textContent: ['', Validators.required, this.textValidator],
+      //language: ['', [Validators.required, this.languageValidator]],
+      //textContent: ['', Validators.required, this.textValidator],
       })
 
     this.openModal = true;
@@ -90,34 +99,38 @@ export class SnapShotPageComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-    this.openModal = true;
-    document.getElementById("comment_text")!.remove();
+
+  ngOnInit() {
+    this.imageSubscription = this.imageCropperService.croppedImage$.subscribe((croppedImage) => {
+      this.imageBase = croppedImage;
+    });
+      this.openModal = true;
+      document.getElementById("comment_text")!.remove();
   }
+
+  ngOnDestroy() {
+    if (this.imageSubscription) {
+      this.imageSubscription.unsubscribe();
+    }
+  }
+
 
   public ngAfterViewInit() {
-    if (!this.imageElement) {
-      console.error("Image element not found." + this.imageElement);
-      return;
-    }
-    console.error("Image element found." + this.imageElement);
-    this.cropper = new Cropper(this.imageElement, {
-      zoomable: false,
-      scalable: false,
-      aspectRatio: 1,
-      crop: () => {
-        this.canvas2 = this.cropper.getCroppedCanvas();
-        console.log(this.canvas2)
-        if (!this.canvas2) {
-          console.error("Canvas not available.");
-          return;
+    if (this.imageElement) {
+      this.cropper = new Cropper(this.imageElement.nativeElement, {
+        zoomable: true,
+        scalable: false,
+        crop: () => {
+          const canvas = this.cropper.getCroppedCanvas();
+          this.imageDestination = canvas.toDataURL("imageSource");
         }
-        this.imageDestination = this.canvas2.toDataURL("image/png");
-        console.log("Image destination set:", this.imageDestination);
-
-      }
-    });
+      });
+    }
   }
+
+
+
+
 
   async capture(): Promise<string> {
     try {
@@ -166,7 +179,12 @@ export class SnapShotPageComponent implements OnInit {
     this.isImageCropperInitialized = true;
   }
 
+
+
   async captureAndTranslate() {
+    if (this.createNewTextForm.valid) {
+    console.log('Form is valid.');
+
     try {
       const imageBase64 = this.imageBase;
       console.log('Cropped image:', imageBase64);
@@ -186,21 +204,12 @@ export class SnapShotPageComponent implements OnInit {
     } catch (error) {
       console.error('Error capturing and translating text:', error);
     }
-  }
+    } else {
 
-
-  //after capture() and before captureandtranslate()
-  //Update the form with the captured image data
-  async updateImgData() {
-    try {
-      const imageBase64 = await this.capture();
-      this.createNewTextForm.patchValue({
-        imageBase: imageBase64
-      });
-    } catch (error) {
-      console.error('Error capturing screen:', error);
-    }
+    console.log('Form is not valid. Please fill in all required fields.');
   }
+}
+
 
 
   base64Validator(control: FormControl): { [key: string]: any } | null {

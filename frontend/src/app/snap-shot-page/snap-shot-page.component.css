@@ -337,6 +337,7 @@ input[type="submit"]:hover{
   to {opacity:1 ;}
 }
 
+
 textarea {
   position: absolute;
   margin-left: auto;
@@ -367,3 +368,11 @@ textarea:focus {
   background: none repeat scroll 0 0 #FFFFFF;
   outline-width: 0;
 }
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+
