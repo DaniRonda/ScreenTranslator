@@ -17,8 +17,8 @@ export interface Translation {
   To: string;
 }
 export interface TranslationRequest {
-  targetLanguage: string;
-  content: string;
+  TargetLanguage: string;
+  Content: string;
 }
 export interface TranslationResponse {
   DetectedLanguage: DetectedLanguage;

@@ -13,8 +13,8 @@ export class TranslationService {
 
   translateText(text: CaptureText): Observable<TranslationResponse> {
     const request: TranslationRequest = {
-      targetLanguage: text.language || '',
-      content: text.imageBase || ''
+      TargetLanguage: text.language || '',
+      Content: text.imageBase || ''
     };
 
     return this.http.post<TranslationResponse>(environment.baseUrl, request).pipe(
@@ -26,8 +26,8 @@ export class TranslationService {
   }
   translateText2(text: CaptureText2): Observable<TranslationResponse> {
     const request: TranslationRequest = {
-      targetLanguage: text.language || '',
-      content: text.content || ''
+      TargetLanguage: text.language || '',
+      Content: text.content || ''
     };
 
     return this.http.post<TranslationResponse>(environment.baseUrl + 'Translation/Translate', request).pipe(

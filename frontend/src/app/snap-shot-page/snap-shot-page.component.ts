@@ -182,18 +182,13 @@ export class SnapShotPageComponent implements OnInit {
 
 
   async captureAndTranslate() {
-<<<<<<< Updated upstream
-    if (this.createNewTextForm.valid) {
-    console.log('Form is valid.');
 
-    try {
-      const imageBase64 = this.imageBase;
-      console.log('Cropped image:', imageBase64);
-=======
     if (this.imageIsOn == true){
       if (this.createNewTextForm.valid) {
         console.log('Form is valid.');
->>>>>>> Stashed changes
+        try {
+          const imageBase64 = this.imageBase;
+          console.log('Cropped image:', imageBase64);
 
       const selectedLanguage = this.languageService.getSelectedLanguage();
       console.log('Selected language:', selectedLanguage);
@@ -205,17 +200,11 @@ export class SnapShotPageComponent implements OnInit {
 
       console.log('Text to be translated:', text);
 
-<<<<<<< Updated upstream
+
       const translationResponse = await this.translationService.translateText(text).toPromise();
       console.log('Translation response:', translationResponse);
-    } catch (error) {
-      console.error('Error capturing and translating text:', error);
-=======
-          console.log('Text to be translated:', text);
-
-          const translationResponse = await this.translationService.translateText(text).toPromise();
-          console.log('Translation response:', translationResponse);
-        } catch (error) {
+    }
+       catch (error) {
           console.error('Error capturing and translating text:', error);
         }
       } else {
@@ -235,7 +224,7 @@ export class SnapShotPageComponent implements OnInit {
             language: selectedLanguage,
             content: content
           };
-          
+
           const translationResponse = await this.translationService.translateText2(text).toPromise();
           console.log('Translation response:', translationResponse);
         } catch (error) {
@@ -246,13 +235,10 @@ export class SnapShotPageComponent implements OnInit {
         console.log('Form is not valid. Please fill in all required fields.');
       }
 
->>>>>>> Stashed changes
-    }
-    } else {
 
-    console.log('Form is not valid. Please fill in all required fields.');
-  }
-}
+    }
+    } 
+
 
 
 
