@@ -13,6 +13,8 @@ import {ImageCroppperComponent} from '../cropper/image-croppper.component';
 import {ImageCroppperService} from '../../services/image.croppper.service';
 import {Subscription} from 'rxjs';
 import { ErrorMessageService } from '../../services/error.Service';
+import {Cloudinary, CloudinaryImage} from "@cloudinary/url-gen";
+import { CloudinaryService } from '../../services/cloudinary.service';
 
 
 @Component({
@@ -45,8 +47,64 @@ export class SnapShotPageComponent implements OnInit {
   imagenum = 0;
   textnum = 0;
   imageBase: string = '';
-
   picture1: string | ArrayBuffer | null = null;
+  openModal = false;
+  createNewTextForm: FormGroup;
+  createNewFormText: FormGroup;
+  canvas2: HTMLCanvasElement | null;
+  private imageSubscription: Subscription | undefined;
+  public imageDestination: string;
+
+  constructor(
+    private languageService: LanguageService,
+    private translationService: TranslationService,
+
+    private renderer: Renderer2, private elementRef: ElementRef,
+    private imageCropperService: ImageCroppperService,
+    private errorMessageService: ErrorMessageService,
+    private cloudinaryService : CloudinaryService,
+    private fb: FormBuilder,
+  ) {
+
+    this.createNewTextForm = this.fb.group({
+      //language: ['', [Validators.required, this.validateLanguage.bind(this)]],
+      //imageBase: ['', [Validators.required, this.validateImage.bind(this)]],
+    });
+    this.createNewFormText = this.fb.group({
+      //language: ['', [Validators.required, this.languageValidator]],
+      //textContent: ['', Validators.required, this.textValidator],
+    })
+
+    this.openModal = true;
+    this.imageDestination = "";
+    this.canvas2 = null;
+
+  }
+
+
+  ngOnInit() {
+    const cld = new Cloudinary({
+      cloud: {
+        cloudName :'dsl5j20te' ,
+        apiKey: '886751729321488' ,
+        apiSecret : 'PhMsDL0oXtFKYhljG8mzYQP5WBk'
+      }
+    })
+
+    this.imageSubscription = this.imageCropperService.croppedImage$.subscribe((croppedImage) => {
+      this.imageBase = croppedImage;
+    });
+    this.openModal = true;
+    document.getElementById("comment_text")!.remove();
+  }
+
+  ngOnDestroy() {
+    if (this.imageSubscription) {
+      this.imageSubscription.unsubscribe();
+    }
+  }
+
+
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
@@ -62,59 +120,6 @@ export class SnapShotPageComponent implements OnInit {
     }
   }
 
-
-  openModal = false;
-  createNewTextForm: FormGroup;
-
-  createNewFormText: FormGroup;
-  canvas2: HTMLCanvasElement | null;
-
-  private imageSubscription: Subscription | undefined;
-
-  public imageDestination: string;
-
-
-  constructor(
-    private languageService: LanguageService,
-    private translationService: TranslationService,
-
-    private renderer: Renderer2, private elementRef: ElementRef,
-    private imageCropperService: ImageCroppperService,
-    private errorMessageService: ErrorMessageService,
-    private fb: FormBuilder,
-  ) {
-
-    this.createNewTextForm = this.fb.group({
-      //language: ['', [Validators.required, this.validateLanguage.bind(this)]],
-      //imageBase: ['', [Validators.required, this.validateImage.bind(this)]],
-    });
-    this.createNewFormText = this.fb.group({
-      //language: ['', [Validators.required, this.languageValidator]],
-      //textContent: ['', Validators.required, this.textValidator],
-      })
-
-    this.openModal = true;
-    this.imageDestination = "";
-    this.canvas2 = null;
-
-  }
-
-
-  ngOnInit() {
-    this.imageSubscription = this.imageCropperService.croppedImage$.subscribe((croppedImage) => {
-      this.imageBase = croppedImage;
-    });
-      this.openModal = true;
-      document.getElementById("comment_text")!.remove();
-  }
-
-  ngOnDestroy() {
-    if (this.imageSubscription) {
-      this.imageSubscription.unsubscribe();
-    }
-  }
-
-
   public ngAfterViewInit() {
     if (this.imageElement) {
       this.cropper = new Cropper(this.imageElement.nativeElement, {
@@ -127,9 +132,6 @@ export class SnapShotPageComponent implements OnInit {
       });
     }
   }
-
-
-
 
 
   async capture(): Promise<string> {
@@ -172,16 +174,28 @@ export class SnapShotPageComponent implements OnInit {
     }
   }
 
-  upload() {
-
-  }
   onImageCropperInit() {
     this.isImageCropperInitialized = true;
   }
 
+  async onCropperDone(event: any) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+      const base64 = reader.result as string;
+      try {
+        const response = await this.cloudinaryService.uploadImage(base64).toPromise();
+        console.log('Image uploaded:', response);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    };
+  }
 
 
   async captureAndTranslate() {
+
 
     if (this.imageIsOn == true){
       if (this.createNewTextForm.valid) {
@@ -190,20 +204,25 @@ export class SnapShotPageComponent implements OnInit {
           const imageBase64 = this.imageBase;
           console.log('Cropped image:', imageBase64);
 
+
       const selectedLanguage = this.languageService.getSelectedLanguage();
       console.log('Selected language:', selectedLanguage);
 
+      const uploadedImage = await this.cloudinaryService.uploadImage(this.imageBase).toPromise();
+      console.log('Uploaded image:', uploadedImage);
+
+
       const text: CaptureText = {
         language: selectedLanguage,
-        imageBase: imageBase64
+        imageBase: uploadedImage
       };
 
       console.log('Text to be translated:', text);
 
-
       const translationResponse = await this.translationService.translateText(text).toPromise();
       console.log('Translation response:', translationResponse);
     }
+
        catch (error) {
           console.error('Error capturing and translating text:', error);
         }
@@ -237,7 +256,8 @@ export class SnapShotPageComponent implements OnInit {
 
 
     }
-    } 
+    }
+
 
 
 

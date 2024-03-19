@@ -14,8 +14,12 @@ import {LanguageService} from "../services/language.service";
 import {ReactiveFormsModule} from "@angular/forms";
 import { ImageCroppperService } from "../services/image.croppper.service";
 
+
 import { ErrorMessageService } from "../services/error.Service";
 import {Cloudinary} from "@cloudinary/url-gen";
+
+
+import {CloudinaryModule, } from '@cloudinary/ng';
 
 
 
@@ -34,6 +38,7 @@ import {Cloudinary} from "@cloudinary/url-gen";
     HttpClientModule,
     MatDialogModule,
     ReactiveFormsModule,
+    CloudinaryModule,
 
 
   ],

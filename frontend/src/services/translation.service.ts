@@ -17,7 +17,8 @@ export class TranslationService {
       Content: text.imageBase || ''
     };
 
-    return this.http.post<TranslationResponse>(environment.baseUrl, request).pipe(
+
+   return this.http.post<TranslationResponse>(`${environment.baseUrl}/Image/TranslateImage`, request).pipe(
       catchError((error: any) => {
         console.error('An error occurred:', error);
         return throwError('Something went wrong. Please try again later.');
