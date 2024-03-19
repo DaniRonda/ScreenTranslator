@@ -8,7 +8,7 @@ import {catchError, Observable, throwError} from "rxjs";
   providedIn: 'root'
 })
 export class TranslationService {
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, translatioRequest: TranslationRequest) {
   }
 
   translateText(text: CaptureText): Observable<TranslationResponse> {
@@ -39,8 +39,11 @@ export class TranslationService {
       })
     );
   }
-  getTranslation(): Observable<Translation> {
-    return this.http.get<Translation>(environment.baseUrl + 'Translation/Translate');
+  
+
+  getTranslation() {
+    const call = this.http.get<Translation[]>(environment.baseUrl + 'Translation/Translate');
+    this.translatioRequest. = await firstValueFrom<Order[]>(call);
   }
 }
 
