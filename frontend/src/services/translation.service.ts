@@ -2,7 +2,7 @@
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../environments/environment";
 import {CaptureText, CaptureText2, TranslationRequest, TranslationResponse} from "../models/translation-request";
-import {catchError, Observable, throwError} from "rxjs";
+import {catchError, map, Observable, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +33,12 @@ export class TranslationService {
       Content: text.content || ''
     };
 
-    return this.http.post<TranslationResponse>(`${environment.baseUrl}Translation/Translate`, request).pipe(
+    return this.http.post<any>(`${environment.baseUrl}Translation/Translate`, request).pipe(
+      map(response => {
+        return {
+          translation: response?.translation?.Text || ''
+        };
+      }),
       catchError((error: any) => {
         console.error('An error occurred:', error);
         return throwError('Something went wrong. Please try again later.');

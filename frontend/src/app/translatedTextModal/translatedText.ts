@@ -26,6 +26,8 @@ export class TranslatedTextComponent  {
 
   ) { this.translatedText = this.translationStorageService.getTranslatedText();
     console.log('Obtained translated text:', this.translatedText);
+    console.log('Data:', this.data); // Log the value of this.data
+    console.log('Data as string:', JSON.stringify(this.data));
   }
 
   ngOnInit(): void {
