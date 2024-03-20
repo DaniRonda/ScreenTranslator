@@ -1,4 +1,3 @@
-
 import {Component, ElementRef, Input, ViewChild, Inject, OnInit, Renderer2} from '@angular/core';
 import {faCamera, faEarthAmerica, faFileExport, faCheck, faCrop, faFont} from '@fortawesome/free-solid-svg-icons';
 import Cropper from "cropperjs";
@@ -12,10 +11,11 @@ import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, 
 import {ImageCroppperComponent} from '../cropper/image-croppper.component';
 import {ImageCroppperService} from '../../services/image.croppper.service';
 import {Subscription} from 'rxjs';
-import { ErrorMessageService } from '../../services/error.Service';
+import {ErrorMessageService} from '../../services/error.Service';
 import {Cloudinary, CloudinaryImage} from "@cloudinary/url-gen";
-import { CloudinaryService } from '../../services/cloudinary.service';
-import { TranslatedTextComponent } from '../translatedTextModal/translatedText';
+import {CloudinaryService} from '../../services/cloudinary.service';
+import {TranslationStorageService} from '../../services/translationStorageService';
+import {TranslatedTextComponent} from '../translatedTextModal/translatedText';
 
 
 @Component({
@@ -56,15 +56,16 @@ export class SnapShotPageComponent implements OnInit {
   private imageSubscription: Subscription | undefined;
   public imageDestination: string;
 
+
   constructor(
     private languageService: LanguageService,
     private translationService: TranslationService,
-
     private renderer: Renderer2, private elementRef: ElementRef,
     private imageCropperService: ImageCroppperService,
     private errorMessageService: ErrorMessageService,
-    private cloudinaryService : CloudinaryService,
+    private cloudinaryService: CloudinaryService,
     private fb: FormBuilder,
+    private translationStorageService: TranslationStorageService,
     public dialog: MatDialog,
   ) {
 
@@ -83,13 +84,12 @@ export class SnapShotPageComponent implements OnInit {
 
   }
 
-
   ngOnInit() {
     const cld = new Cloudinary({
       cloud: {
-        cloudName :'dsl5j20te' ,
-        apiKey: '886751729321488' ,
-        apiSecret : 'PhMsDL0oXtFKYhljG8mzYQP5WBk'
+        cloudName: 'dsl5j20te',
+        apiKey: '886751729321488',
+        apiSecret: 'PhMsDL0oXtFKYhljG8mzYQP5WBk'
       }
     })
 
@@ -105,7 +105,6 @@ export class SnapShotPageComponent implements OnInit {
       this.imageSubscription.unsubscribe();
     }
   }
-
 
 
   onFileSelected(event: any) {
@@ -197,73 +196,64 @@ export class SnapShotPageComponent implements OnInit {
 
 
   async captureAndTranslate() {
+    try {
+      let translatedText: string = '';
 
-
-    if (this.imageIsOn == true){
-      if (this.createNewTextForm.valid) {
-        console.log('Form is valid.');
-        try {
+      if (this.imageIsOn) {
+        // Capture and translate image
+        if (this.createNewTextForm.valid) {
           const imageBase64 = this.imageBase;
-          console.log('Cropped image:', imageBase64);
-
-
-      const selectedLanguage = this.languageService.getSelectedLanguage();
-      console.log('Selected language:', selectedLanguage);
-
-      const uploadedImage = await this.cloudinaryService.uploadImage(this.imageBase).toPromise();
-      console.log('Uploaded image:', uploadedImage);
-
-
-      const text: CaptureText = {
-        language: selectedLanguage,
-        imageBase: uploadedImage
-      };
-
-      console.log('Text to be translated:', text);
-
-      const translationResponse = await this.translationService.translateText(text).toPromise();
-      console.log('Translation response:', translationResponse);
-          this.openTextModal()
-    }
-
-       catch (error) {
-          console.error('Error capturing and translating text:', error);
+          const selectedLanguage = this.languageService.getSelectedLanguage();
+          const uploadedImage = await this.cloudinaryService.uploadImage(this.imageBase).toPromise();
+          const text: CaptureText = {
+            language: selectedLanguage,
+            imageBase: uploadedImage
+          };
+          const translationResponse = await this.translationService.translateText(text).toPromise();
+          translatedText = translationResponse!.translation;
+        } else {
+          console.log('Form is not valid. Please fill in all required fields.');
+          return;
         }
       } else {
-
-        console.log('Form is not valid. Please fill in all required fields.');
-      }
-    }
-    if (this.imageIsOn == false) {
-      const textareaElement = document.getElementById('comment_text') as HTMLTextAreaElement;
-      if (textareaElement) {
-        try {
+        // Capture and translate text
+        const textareaElement = document.getElementById('comment_text') as HTMLTextAreaElement;
+        if (textareaElement) {
           const content = textareaElement.value;
-
           const selectedLanguage = this.languageService.getSelectedLanguage();
-
           const text: CaptureText2 = {
             language: selectedLanguage,
             content: content
           };
-
           const translationResponse = await this.translationService.translateText2(text).toPromise();
-          console.log('Translation response:', translationResponse);
-          this.openTextModal()
-        } catch (error) {
-          console.error('Error capturing and translating text:', error);
-        }
-      } else {
+          translatedText = translationResponse!.translation;
 
-        console.log('Form is not valid. Please fill in all required fields.');
+        } else {
+          console.log('Form is not valid. Please fill in all required fields.');
+          return;
+        }
       }
 
 
+      this.translationStorageService.setTranslatedText(translatedText);
+      this.openTextModal(translatedText);
+    } catch (error) {
+      console.error('Error capturing and translating text:', error);
     }
-    }
+  }
 
+  translatedText: string = '';
+  translatedText2: string = '';
 
-
+  openTextModal(translatedText: string) {
+    const dialog = this.dialog.open(TranslatedTextComponent, {
+      width: '800px',
+      height: '800px',
+      data: {
+        translatedText: this.translatedText
+      }
+    });
+  }
 
 
   base64Validator(control: FormControl): { [key: string]: any } | null {
@@ -294,7 +284,7 @@ export class SnapShotPageComponent implements OnInit {
     return null;
   }
 
-  textValidator(control: FormControl): {[key: string]: any} | null {
+  textValidator(control: FormControl): { [key: string]: any } | null {
     const maxLength = 50000;
     if (control.value.length > maxLength) {
       return {maxLengthExceeded: 'Maximum text size exceeded. Please upload a smaller text.'};
@@ -318,11 +308,11 @@ export class SnapShotPageComponent implements OnInit {
     });
   }
 
-imageCropper = document.getElementById("imageCropper")
+  imageCropper = document.getElementById("imageCropper")
 
 
-  textOn(){
-    if (this.textnum == 0){
+  textOn() {
+    if (this.textnum == 0) {
       this.imageIsOn = false;
       console.log("hionce")
       this.textnum = 1;
@@ -334,8 +324,9 @@ imageCropper = document.getElementById("imageCropper")
 
 
   }
-  imageOn(){
-    if (this.imagenum == 0){
+
+  imageOn() {
+    if (this.imagenum == 0) {
       this.imageIsOn = true;
       this.imagenum = 1;
       this.textnum = 0;
@@ -359,13 +350,9 @@ imageCropper = document.getElementById("imageCropper")
     const imageHolderDiv = this.elementRef.nativeElement.querySelector('.imageholder');
     this.renderer.appendChild(imageHolderDiv, textarea);
   }
-  openTextModal(){
-    const dialog = this.dialog.open(TranslatedTextComponent, {
-      width: '800px',
-      height: '800px',
-      data: {  }
-    });
-  }
+
+
+
 }
 
 

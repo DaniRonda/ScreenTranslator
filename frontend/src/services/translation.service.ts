@@ -1,14 +1,14 @@
 ﻿import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../environments/environment";
-import {CaptureText, CaptureText2, TranslationRequest, TranslationResponse, Translation} from "../models/translation-request";
+import {CaptureText, CaptureText2, TranslationRequest, TranslationResponse} from "../models/translation-request";
 import {catchError, Observable, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TranslationService {
-  constructor(private http: HttpClient, translatioRequest: TranslationRequest) {
+  constructor(private http: HttpClient) {
   }
 
   translateText(text: CaptureText): Observable<TranslationResponse> {
@@ -17,33 +17,28 @@ export class TranslationService {
       Content: text.imageBase || ''
     };
 
-
-   return this.http.post<TranslationResponse>(`${environment.baseUrl}/Image/TranslateImage`, request).pipe(
+   return this.http.post<TranslationResponse>(`${environment.baseUrl}Image/TranslateImage`, request).pipe(
       catchError((error: any) => {
         console.error('An error occurred:', error);
         return throwError('Something went wrong. Please try again later.');
       })
     );
-
   }
+
+
+
   translateText2(text: CaptureText2): Observable<TranslationResponse> {
     const request: TranslationRequest = {
       TargetLanguage: text.language || '',
       Content: text.content || ''
     };
 
-    return this.http.post<TranslationResponse>(environment.baseUrl + 'Translation/Translate', request).pipe(
+    return this.http.post<TranslationResponse>(`${environment.baseUrl}Translation/Translate`, request).pipe(
       catchError((error: any) => {
         console.error('An error occurred:', error);
         return throwError('Something went wrong. Please try again later.');
       })
     );
-  }
-  
-
-  getTranslation() {
-    const call = this.http.get<Translation[]>(environment.baseUrl + 'Translation/Translate');
-    this.translatioRequest. = await firstValueFrom<Order[]>(call);
   }
 }
 

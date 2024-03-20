@@ -20,7 +20,14 @@ export interface TranslationRequest {
   TargetLanguage: string;
   Content: string;
 }
-export interface TranslationResponse {
+/*export interface TranslationResponse {
   DetectedLanguage: DetectedLanguage;
   Translations: Translation[];
+}*/
+export interface TranslationResponse {
+  translation: string;
+
 }
+
+
+

@@ -1,29 +1,34 @@
-import { HttpClient } from "@angular/common/http";
-import {Component, ElementRef, Input, OnInit, ViewChild} from "@angular/core";
-import { environment } from "../../environments/environment";
-import { TranslationService } from "../../services/translation.service";
-import { Subscription, firstValueFrom } from "rxjs";
-import { Translation } from "../../models/translation-request";
+import {HttpClient} from "@angular/common/http";
+import {Component, ElementRef, Inject, Input, OnInit, ViewChild} from "@angular/core";
+import {environment} from "../../environments/environment";
+import {TranslationService} from "../../services/translation.service";
+import {Subscription, firstValueFrom} from "rxjs";
+import {Translation} from "../../models/translation-request";
+import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { TranslationStorageService } from "../../services/translationStorageService";
+
 @Component({
   selector: 'translatedText',
   templateUrl: 'translatedText.html',
   styleUrls: ['translatedText.css']
 })
-export class TranslatedTextComponent implements OnInit {
+export class TranslatedTextComponent  {
   subscription: Subscription | undefined;
   translationData: Translation | any;
-  translatedText: string | any;
-  targetLanguage: string | any;
-  constructor(
-    public http: HttpClient,
-    private translationService: TranslationService,
-              ) {
 
+  targetLanguage: string | any;
+  translatedText: string = '';
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private translationStorageService: TranslationStorageService
+
+
+  ) { this.translatedText = this.translationStorageService.getTranslatedText();
+    console.log('Obtained translated text:', this.translatedText);
   }
 
-  public ngOnInit() {this.getTranslation();}
+  ngOnInit(): void {
 
-  getTranslation() {
-      const call = this.http.get<Translation[]>(environment.baseUrl + 'Translation/Translate');
-      this.state.orders = await firstValueFrom<Order[]>(call);
+  }
 }
